@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- css stylesheet -->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+  <title>Login</title>
+
+</head>
+<body>
+
+  <div id="map"></div>
+  <script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoibWFuaXNobmFpciIsImEiOiJjamdqMWdqcXQwY2xrMnhudzI2c245aDd2In0.AxR3vxzUtWjv312SBHmnYA';
+  var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+    center: [103.846678, 1.372121], // starting position [lng, lat]
+    zoom: 16 // starting zoom
+  });
+
+
+  map.addControl(new MapboxGeocoder({
+    accessToken: 'pk.eyJ1IjoibWFuaXNobmFpciIsImEiOiJjamdqMWdqcXQwY2xrMnhudzI2c245aDd2In0.AxR3vxzUtWjv312SBHmnYA',
+    // limit results to Singapore
+    country: 'sg'
+  }));
+
+  // Add geolocate control to the map.
+  map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true,
+    showUserLocation: true
+  }));
+
+  // Ang Mo Kio Market & Food Centre
+  map.loadImage('https://i.imgur.com/jDJAqGW.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat1', image);
+    map.addLayer({
+      "id": "points1",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.846678, 1.372121]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat1",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points1', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      // var description = `<strong>${icon}Breaking Down Those Tech Buzzwords</strong><p>Hosted by: Clement Lee<br>Location: Room 123<br></p>`;
+      var description = `
+      <div class="content" style="width:330px;position:relative">
+      <a class="ui green label" href="/amk">
+      Blk 724 Ang Mo Kio Market & Food Centre
+      </a>
+      <div class="distance"><a class="ui label">1 km</a></div>
+      <div class="content" style="margin-top:10px">
+      <div style="display:inline-block;vertical-align:top">
+      <img class="marker-pic" style="width:100px" src="/img/Laksa.jpg">
+      </div>
+      <div style="display:inline-block;padding-left:10px">
+      <div><a class="ui yellow circular label">1</a><strong><a>&nbsp;368 Katong Laksa</a></strong></div>
+      <div style="padding-top:5px;><img class="description-icon" src="img/surprise.svg">&nbsp;Laksa</div>
+      <div style="padding-top:10px"><span style ="color:green;font-weight:bold">Open Now</span></div>
+      </div>
+      </div>
+      </div>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points1', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points1', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // AMK Hub NTUC Food Fare
+  map.loadImage('https://i.imgur.com/OXw050l.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat2', image);
+    map.addLayer({
+      "id": "points2",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.84835, 1.369309]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat2",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points2', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>[icon]AMK Hub NTUC Food Fare</strong><p>Opening hours<br></p>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points2', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points2', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // S-11 AMK Big Mac Central Food House
+  map.loadImage('https://i.imgur.com/l5NqUuv.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat3', image);
+    map.addLayer({
+      "id": "points3",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.847195, 1.369226]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat3",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points3', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>[icon]S-11 AMK Big Mac Central Food House</strong><p>Opening hours<br></p>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points3', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points3', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // S-11 F&B HOLDINGS PTE LTD
+  map.loadImage('https://i.imgur.com/l5NqUuv.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat4', image);
+    map.addLayer({
+      "id": "points4",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.847913, 1.371438]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat4",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points4', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>[icon]S-11 F&B HOLDINGS PTE LTD</strong><p>Opening hours<br></p>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points4', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points4', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // Blk 925
+  map.loadImage('https://i.imgur.com/iLo8jlQ.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat5', image);
+    map.addLayer({
+      "id": "points5",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.847583, 1.372173]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat5",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points5', function (e) {
+
+      // style="width:35px;margin-right:5px;margin-bottom:5px;" src=\\"img/career-icon.svg\\" style=\\"margin-left:-3.5;\\"
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>Blk 925</strong><p>Opening hours<br></p>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points5', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points5', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // AMK Broadway Kopitiam
+  map.loadImage('https://i.imgur.com/iLo8jlQ.png?1', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat6', image);
+    map.addLayer({
+      "id": "points6",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.846024, 1.373063]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat6",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points6', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>[icon]AMK Broadway Kopitiam</strong><p>Opening hours<br></p>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points6', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points6', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+  // Current location
+  map.loadImage('https://i.imgur.com/ZGGRJIB.png?3', function(error, image) {
+    if (error) throw error;
+
+    map.addImage('cat7', image);
+    map.addLayer({
+      "id": "points7",
+      "type": "symbol",
+      "source": {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [103.844809, 1.376227]
+            }
+          }]
+        }
+      },
+      "layout": {
+        "icon-image": "cat7",
+        "icon-size": 0.50
+      }
+    });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'points7', function (e) {
+
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = `<strong>Current location</strong>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      var popup = new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map)
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points7', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points7', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  });
+
+</script>
+
+
+<div id="huh">
+  <button class="red large circular ui icon button" id="huh-button">
+    HUH<i class="icon question"></i>
+  </button>
+</div>
+
+<div class="container">
+
+  {{#if loggedIn}}
+  <div id="welcome-message" class="ui success message">
+    <i class="close icon"></i>
+    <div class="header">
+      Welcome back to hawkersaurus, CJ!
+    </div>
+    <p>Start exploring what's around you!</p>
+  </div>
+  {{/if}}
+
+  {{#if ordered}}
+  <div id="checkout-success-message" class="ui success message">
+    <i class="close icon"></i>
+    <div id="order-accepted" class="header">
+      Your order was successful.
+    </div>
+    <p id="order-accepted-desc">An SMS has been sent to the hawkers of Tien Tien Chicken Rice.</p>
+  </div>
+
+  <script>
+  setTimeout(function(){
+    $('#checkout-success-message').removeClass('success');
+    $('#checkout-success-message').addClass('warning');
+    $('#order-accepted').text('Order accepted!');
+    $('#order-accepted-desc').html('Your order is ready to be picked up in <a class="ui label">15 min</a>.');
+
+  }, 3000);
+
+  </script>
+  {{/if}}
+
+  <script>
+  $('.message .close')
+  .on('click', function() {
+    $(this)
+    .closest('.message')
+    .transition('fade')
+    ;
+  });
+  </script>
+
+  <div id="navbar">
+    <button class="green large circular ui icon button" id="add-stall-button">
+      <i class="icon add"></i>
+    </button>
+    <button class="yellow large circular ui icon button" id="hawker-directory-button">
+      <i class="icon list"></i>
+    </button>
+    <button class="orange large circular ui icon button" id="user-profile-button">
+      <i class="icon user"></i>
+    </button>
+    <button class="pink large circular ui icon button" id="ranking-button">
+      <i class="icon trophy"></i>
+    </button>
+
+  </div>
+</div>
+
+
+
+<!-- ADD STALL MODAL -->
+<div class="ui longer modal add-stall">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    Add a stall
+  </div>
+
+  <div class="scrolling content">
+    <form id="add-stall-form">
+      <div class="ui form">
+        <div class="field">
+          <label>Name</label>
+          <input id="event-name-input" name="name" type="text" placeholder="E.g. Tien Tien Chicken Rice">
+        </div>
+        <!-- FORM VALIDATOR -->
+        <div id="event-form-validator" class="form-validator ui error message" style="display:none;">
+          <ul class="list form-validator-list" id="event-form-validator-list">
+          </ul>
+        </div>
+
+        <div id="locationField">
+          <div class="field">
+            <label>Location</label>
+            <input name="venue" id="autocomplete" placeholder="Enter an address"
+            onFocus="geolocate()" type="text"></input>
+          </div>
+        </div>
+        <!-- FORM VALIDATOR -->
+        <div id="venue-form-validator" class="form-validator ui error message" style="display:none;">
+          <ul class="list form-validator-list" id="venue-form-validator-list">
+          </ul>
+        </div>
+        <br>
+
+        <div class="field">
+          <label>Opening hours</label>
+          <input id="event-name-input" name="name" type="text" placeholder="E.g. 8.00am - 10.00pm">
+        </div>
+
+        <div class="field">
+          <a class="ui basic label" id="hawker-ctr">Hawker Ctr</a> <a class="ui basic label" id="coffee-shop">Coffee Shop</a> <a class="ui basic label" id="food-court">Food Court</a>
+        </div>
+
+        <div class="field" id="hawker-ctr-dropdown" style="display:none">
+          <label>Hawker Ctr</label>
+          <div class="ui fluid selection dropdown">
+            <input id="category-input" name="category" type="hidden" placeholder="Event Category">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select a Place</div>
+
+            <div class="menu">
+              <div class="item" data-value="Newton Food Centre">
+                <div class="category-dropdown">Newton Food Centre</div>
+              </div>
+              <div class="item" data-value="Blk 7 Empress Road">
+                <div class="category-dropdown">Blk 7 Empress Road</div>
+              </div>
+              <div class="item" data-value="Ghim Moh Road Blk 20">
+                <div class="category-dropdown">Ghim Moh Road Blk 20</div>
+              </div>
+              <div class="item" data-value="Shunfu Mart">
+                <div class="category-dropdown">Shunfu Mart</div>
+              </div>
+              <div class="item" data-value="Bukit Timah Market">
+                <div class="category-dropdown">Bukit Timah Market</div>
+              </div>
+              <div class="item" data-value="Toa Payoh Vista Market">
+                <div class="category-dropdown">Toa Payoh Vista Market</div>
+              </div>
+              <div class="item" data-value="Tanglin Halt Food Centre">
+                <div class="category-dropdown">Tanglin Halt Food Centre</div>
+              </div>
+              <div class="item" data-value="Kim Keat Palm Market and Food Centre">
+                <div class="category-dropdown">Kim Keat Palm Market and Food Centre</div>
+              </div>
+              <div class="item" data-value="Kebun Baru Market and Food Centre">
+                <div class="category-dropdown">Kebun Baru Market and Food Centre</div>
+              </div>
+              <div class="item" data-value="Jalan Leban Food Centre">
+                <div class="category-dropdown">Jalan Leban Food Centre</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field" id="coffee-shop-dropdown" style="display:none">
+          <label>Coffee Shop</label>
+          <div class="ui fluid selection dropdown">
+            <input id="category-input" name="category" type="hidden" placeholder="Event Category">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select a Place</div>
+
+            <div class="menu">
+              <div class="item" data-value="Bee Hwa Yun">
+                <div class="category-dropdown">Bee Hwa Yun</div>
+              </div>
+              <div class="item" data-value="Bee Chow Hng Eating House">
+                <div class="category-dropdown">Bee Chow Hng Eating House</div>
+              </div>
+              <div class="item" data-value="Sin Teck Huat Eating House">
+                <div class="category-dropdown">Sin Teck Huat Eating House</div>
+              </div>
+              <div class="item" data-value="Food Corner 183 Coffeeshop">
+                <div class="category-dropdown">Food Corner 183 Coffeeshop</div>
+              </div>
+              <div class="item" data-value="Chang Cheng - 78C Toa Payoh Central">
+                <div class="category-dropdown">Chang Cheng - 78C Toa Payoh Central</div>
+              </div>
+              <div class="item" data-value="S-11 Woodlands 304 Food House">
+                <div class="category-dropdown">S-11 Woodlands 304 Food House</div>
+              </div>
+              <div class="item" data-value="Broadway Food Centre - Woodlands North Plaza">
+                <div class="category-dropdown">Broadway Food Centre - Woodlands North Plaza</div>
+              </div>
+              <div class="item" data-value="KPT Drinks Woodlands">
+                <div class="category-dropdown">KPT Drinks Woodlands</div>
+              </div>
+              <div class="item" data-value="Ang Tian Sun">
+                <div class="category-dropdown">Ang Tian Sun</div>
+              </div>
+              <div class="item" data-value="131 Food House">
+                <div class="category-dropdown">131 Food House</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field" id="food-court-dropdown" style="display:none">
+          <label>Food Court</label>
+          <div class="ui fluid selection dropdown">
+            <input id="category-input" name="category" type="hidden" placeholder="Event Category">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select a Place</div>
+
+            <div class="menu">
+              <div class="item" data-value="Broadway Food Court @ Sim Lim Square Basement">
+                <div class="category-dropdown">Broadway Food Court @ Sim Lim Square Basement</div>
+              </div>
+              <div class="item" data-value="Food Republic @ 313">
+                <div class="category-dropdown">Food Republic @ 313</div>
+              </div>
+              <div class="item" data-value="Food Village Takashimaya">
+                <div class="category-dropdown">Food Village Takashimaya</div>
+              </div>
+              <div class="item" data-value="Kopitiam @ Kallang Rd">
+                <div class="category-dropdown">Kopitiam @ Kallang Rd</div>
+              </div>
+              <div class="item" data-value="Tastebud Foodcourt Pte Ltd">
+                <div class="category-dropdown">Tastebud Foodcourt Pte Ltd</div>
+              </div>
+              <div class="item" data-value="The Gallerie">
+                <div class="category-dropdown">The Gallerie</div>
+              </div>
+              <div class="item" data-value="Cantine - Paya Lebar Square">
+                <div class="category-dropdown">Cantine - Paya Lebar Square</div>
+              </div>
+              <div class="item" data-value="Let's Eat! @ Seletar Mall">
+                <div class="category-dropdown">Let's Eat! @ Seletar Mall</div>
+              </div>
+              <div class="item" data-value="NTUC Foodfare">
+                <div class="category-dropdown">NTUC Foodfare</div>
+              </div>
+              <div class="item" data-value="Koufu - NYP">
+                <div class="category-dropdown">Koufu - NYP</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <script>
+        $('.ui.dropdown')
+        .dropdown();
+
+        $('#hawker-ctr').click(function() {
+
+          // hide others
+          $('#coffee-shop').css('color','');
+          $('#food-court').css('color','');
+          $('#coffee-shop-dropdown').css('display','none');
+          $('#food-court-dropdown').css('display','none');
+
+          $('#hawker-ctr').css('color','green');
+          $('#hawker-ctr-dropdown').css('display','');
+        })
+
+        $('#coffee-shop').click(function() {
+
+          // hide others
+          $('#hawker-ctr').css('color','');
+          $('#food-court').css('color','');
+          $('#hawker-ctr-dropdown').css('display','none');
+          $('#food-court-dropdown').css('display','none');
+
+          $('#coffee-shop').css('color','green');
+          $('#coffee-shop-dropdown').css('display','');
+        })
+
+        $('#food-court').click(function() {
+
+          // hide others
+          $('#hawker-ctr').css('color','');
+          $('#coffee-shop').css('color','');
+          $('#hawker-ctr-dropdown').css('display','none');
+          $('#coffee-shop-dropdown').css('display','none');
+
+          $('#food-court').css('color','green');
+          $('#food-court-dropdown').css('display','');
+        })
+
+        </script>
+
+        <div class="field">
+          <label style="font-weight:100">Missing? Help the Hawkersaurus community!</label>
+          <input id="event-name-input" name="name" type="text" placeholder="Share with us your discovery.">
+        </div>
+
+        <div class="field textarea">
+          <label>Comments</label>
+          <textarea name="description" type="text" placeholder="Tell us about this stall."></textarea>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="actions">
+    <button class="ui right aligned olive button">Submit</button>
+  </div>
+</div>
+
+<!-- USER PROFILE -->
+<div class="ui longer modal user-profile">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    My Profile
+  </div>
+  <div class="scrolling content">
+
+    <div>
+      <h1 class="ui header" style="margin-top:5px">
+        <img src="img/user.png" class="ui circular image"
+        style="width:75px;height:75px;margin-left:10px;vertical-align:top">
+        <div class="content">
+
+          <div style="font-weight:bold;">
+            CJ Lim
+            <img src="img/chef.png"
+            style="width:60px;float:right">
+          </div>
+          <div style="font-size:16px;margin-top:30px"><span style="color:red">15 </span>Shioks Given</div>
+          <div style="font-size:16px;"><span style="color:red">5 </span>Places Checked In</div>
+          <div style="font-size:16px;">Rank: <span style="color:red">Dinoisseur</span></div>
+          <div style="font-size:16px;">Om-nom-ing since 2015</div>
+
+        </div>
+
+      </h1>
+    </div>
+
+    <div class="ui top attached tabular menu" style="width:100%">
+      <div class="active item" id="activity-tab-button">My Activity</div>
+      <div class="item" id="friends-tab-button">My Friends</div>
+    </div>
+    <div class="ui bottom attached active tab segment" id="activity-tab">
+
+      <div class="ui list">
+
+        <p>Recently Visited</p>
+
+        <div class="item">
+          <img class="ui image" src="img/pic1.png"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">724 Ang Mo Kio Market & Food Centre</a>
+            <span class="description">Last seen eating at <a><b>Centre Satay Bee Hoon</b></a> just now.</span>
+          </div>
+        </div>
+        <hr>
+
+        <div class="item">
+          <img class="ui image" src="img/pic2.jpeg"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">724 Ang Mo Kio Market & Food Centre</a>
+            <span class="description">Last seen eating at <a><b>Xi Xiang Feng</b></a> 3 days ago.</span>
+          </div>
+        </div>
+        <hr>
+
+        <div class="item">
+          <img class="ui image" src="img/pic3.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">Old Airport Road Food Centre</a>
+            <span class="description">Last seen eating at <a><b>Jin Hua Fish Head Bee Hoon</b></a> 5 days ago.</span>
+          </div>
+        </div>
+        <hr>
+
+
+
+
+      </div>
+
+      <div class="ui list">
+        <p>My Favourites</p>
+
+        <div class="item">
+          <img class="ui image" src="img/pic4.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">724 Ang Mo Kio Market & Food Centre</a>
+            <span class="description">Tien Tien Chicken Rice</span>
+          </div>
+        </div>
+        <hr>
+
+        <div class="item">
+          <img class="ui image" src="img/pic5.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">Balestier Road</a>
+            <span class="description">Song Song Bah Kut Teh</span>
+          </div>
+        </div>
+        <hr>
+
+        <div class="item">
+          <img class="ui image" src="img/pic6.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+          <div class="content"style="width:180px">
+            <a class="header">Kallang Mall</a>
+            <span class="description">Katong 368 Laksa</span>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="ui bottom attached tab segment" id="friends-tab">
+
+      <div>Check out your friends' hawkerventures!</div>
+
+      <div class="ui list">
+
+        <div class="item">
+          <img class="ui avatar image" src="img/user2.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+
+          <div class="content"style="width:180px">
+            <a class="header">Gerald Tan</a>
+            <span class="description">Checked in at <a><b>Centre Satay Bee Hoon</b></a> 3 days ago.</span>
+            <div class="ui tiny compact labeled red button" id="like-button1" tabindex="0"style="margin-top:5px;">
+              <div class="ui red button">
+                <i class="heart icon"></i>
+                <font id="like1">Like</font>
+              </div>
+              <a class="ui basic red left pointing label" id="count1">
+                10
+              </a>
+            </div>
+
+          </div>
+
+          <script>
+          $("#like-button1").click(function() {
+            var curr1 = $('#like1').text()
+            if (curr1==="Like"){
+              var curr_likes1 = parseInt($('#count1').text())
+              $('#count1').text(curr_likes1 + 1)
+              $('#like1').text("Unlike")
+            }
+            else{
+              var curr_likes1 = parseInt($('#count1').text())
+              $('#count1').text(curr_likes1 - 1)
+              $('#like1').text("Like")
+            }
+
+          });
+          </script>
+
+        </div>
+
+        <hr>
+
+        <div class="item">
+          <img class="ui avatar image" src="img/user3.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+
+          <div class="content"style="width:180px">
+            <a class="header">Adithya Raghunathan</a>
+            <span class="description">Checked in at <a><b>Katong 368 Laksa</b></a> 35 minutes ago.</span>
+            <div class="ui tiny compact labeled red button" id="like-button2" tabindex="0"style="margin-top:5px;">
+              <div class="ui red button">
+                <i class="heart icon"></i>
+                <font id="like2">Like</font>
+              </div>
+              <a class="ui basic red left pointing label" id="count2">
+                100
+              </a>
+            </div>
+
+          </div>
+
+          <script>
+          $("#like-button2").click(function() {
+            var curr = $('#like2').text()
+            if (curr==="Like"){
+              var curr_likes2 = parseInt($('#count2').text())
+              $('#count2').text(curr_likes2 + 1)
+              $('#like2').text("Unlike")
+            }
+            else{
+              var curr_likes2 = parseInt($('#count2').text())
+              $('#count2').text(curr_likes2 - 1)
+              $('#like2').text("Like")
+            }
+
+          });
+          </script>
+
+        </div>
+
+        <hr>
+
+        <div class="item">
+          <img class="ui avatar image" src="img/user4.jpg"
+          style="width:55px;height:55px;margin-left:5px">
+
+          <div class="content"style="width:180px">
+            <a class="header">Ian Tay</a>
+            <span class="description">Checked in at <a><b>Song Song Bah Kut Teh</b></a> just now.</span>
+            <div class="ui tiny compact labeled red button" id="like-button3" tabindex="0"style="margin-top:5px;">
+              <div class="ui red button">
+                <i class="heart icon"></i>
+                <font id="like3">Like</font>
+              </div>
+              <a class="ui basic red left pointing label" id="count1">
+                56
+              </a>
+            </div>
+
+          </div>
+
+          <script>
+          $("#like-button3").click(function() {
+            var curr1 = $('#like3').text()
+            if (curr1==="Like"){
+              var curr_likes1 = parseInt($('#count3').text())
+              $('#count3').text(curr_likes1 + 1)
+              $('#like3').text("Unlike")
+            }
+            else{
+              var curr_likes1 = parseInt($('#count3').text())
+              $('#count3').text(curr_likes1 - 1)
+              $('#like3').text("Like")
+            }
+
+          });
+          </script>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <script>
+
+    // tab interactivity
+    $('#friends-tab-button').click(function() {
+      $('#activity-tab-button').removeClass('active');
+      $('#activity-tab').removeClass('active');
+      $('#friends-tab-button').addClass('active');
+      $('#friends-tab').addClass('active');
+    })
+
+    $('#activity-tab-button').click(function() {
+      $('#friends-tab-button').removeClass('active');
+      $('#friends-tab').removeClass('active');
+      $('#activity-tab-button').addClass('active');
+      $('#activity-tab').addClass('active');
+    })
+
+    </script>
+
+
+  </div>
+</div>
+
+
+<!-- RANKING MODAL -->
+<div class="ui longer modal ranking">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    Ranks & Challenges
+  </div>
+  <div class="scrolling content">
+
+    <div>
+      <h1 class="ui header" style="margin-top:5px">
+        <!-- <img src="img/user.png" class="ui circular image"
+        style="width:75px;height:75px;margin-left:10px;vertical-align:top"> -->
+        <div class="content">
+
+          <div style="font-weight:bold;">
+            <span style="font-size:20px">Current Ranking:</span> Dinoisseur
+            <img src="img/chef.png"
+            style="width:70px;margin-left:120px;margin-top:10px">
+          </div>
+
+        </div>
+
+      </h1>
+    </div>
+
+    <div class="ui top attached tabular menu" style="width:100%">
+      <div class="active item" id="ranks-tab-button">Ranks</div>
+      <div class="item" id="challenges-tab-button">Challenges</div>
+    </div>
+    <div class="ui bottom attached active tab segment" id="ranks-tab">
+
+      <div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+
+        <div>
+          <p> <h2 class = "lui header"> <center> Dino </center> </h2>  </p>
+          <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/Dino1.jpg">
+
+          <p> Dino is new to the Hawker Centre scene in Singapore. She tries to eat as much Hawker Food as she can with the dreams of growing into a big dinosaur one day.
+          </p>
+        </div>
+
+      </div>
+      <br>
+      <br>
+      <hr>
+
+      <div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+        <div>
+          <p> <h2 class = "lui header"> <center> Hawkersaurus </center> </h2>  </p>
+          <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/surprise.svg">
+
+          <p> Hawkersaurus is a grown up version of Dino and has been to many Hawker Centres. He is really good at identifying where the good Hawker food is and is applying to be an apprentice for Dinoisseur
+          </p>
+        </div>
+
+      </div>
+      <br>
+      <br>
+      <hr>
+
+      <div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+        <div>
+          <p> <h2 class = "lui header"> <center> Dinoisseur </center> </h2> </p>
+
+          <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/chef.png">
+
+          <p> Dinoisseur is the grand master of Hawker food. He not only indulges in tasting Hawker Food, he also collects recipes and is secretly in plans to open the next Michellin Star Hawker stall.
+          </p>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="ui bottom attached tab segment" id="challenges-tab">
+
+      <div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+
+	<div>
+  <p> <h2 class = "lui header"> <center> Dino's adulthood </center> </h2>  </p>
+
+    <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/challenge1.jpg">
+
+  	<p> For Dino to grow up, he needs to prove that he can eat spicy food. The challenge for Dino is to eat at 10 stalls that sells food with the spicy icon.
+  	</p>
+  </div>
+
+</div>
+<br>
+<br>
+<hr>
+
+<div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+  <div>
+  <p> <h2 class = "lui header"> <center> Hawkersaurus' internship </center> </h2>  </p>
+    <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/challenge2.jpg">
+
+    <p> Hawkersaurus is having the final project of his internship with Dinoisseur and he needs to visit at least 50 stalls and 20 hawker centres in order to receive a return offer.
+    </p>
+  </div>
+
+</div>
+<br>
+<br>
+<hr>
+
+<div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+  <div>
+  <p> <h2 class = "lui header"> <center> Dinoisseur's new venture </center> </h2> </p>
+
+    <img  style="text-align:center;width:80px;margin-bottom:10px" class="ui small centered image" src="img/challenge3.jpg">
+
+    <p> Dinoisseur is planning for the launch of his new Hawker stall. He needs to collect 5 recipes from stalls that are top rated at their Hawker Centres.
+    </p>
+  </div>
+
+</div>
+
+    </div>
+
+
+    <script>
+
+    // tab interactivity
+    $('#challenges-tab-button').click(function() {
+      $('#ranks-tab-button').removeClass('active');
+      $('#ranks-tab').removeClass('active');
+      $('#challenges-tab-button').addClass('active');
+      $('#challenges-tab').addClass('active');
+    })
+
+    $('#ranks-tab-button').click(function() {
+      $('#challenges-tab-button').removeClass('active');
+      $('#challenges-tab').removeClass('active');
+      $('#ranks-tab-button').addClass('active');
+      $('#ranks-tab').addClass('active');
+    })
+
+    </script>
+
+
+  </div>
+</div>
+
+<!-- HAWKER DIRECTORY MODAL -->
+<div class="ui longer modal hawker-directory">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    Hawker Directory
+  </div>
+
+  <div class="scrolling content">
+
+    <div style="margin-left:10px ; margin-right:10px; margin-top:20px" sclass="ui vertical segment">
+      <div>
+        <h4 class = "left floated ui header"> 1. Blk 724 Ang Mo Kio Food Centre </h4>
+        <img  style="margin-left:10px" class="ui small left floated image" src="img/724.jpg">
+        <p>
+          <span style ="color:green;font-weight:bold">Open Now</span><br>
+          <a class="ui teal tag label">Featured</a>
+          <div class="ui medium compact yellow label">
+            Store Count
+            <div class="detail">36</div>
+          </div>
+
+          <div class="ui medium compact red label">
+            What's there?
+          </div>
+        </p>
+
+        <p> 724 Ang Mo Kio Food Center has the famous Tien Tien Chicken Rice, Song Song Ba Ku Teh and Katong Laksa stalls...
+        </p>
+
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div style="margin-left:10px ; margin-right:10px" sclass="ui vertical segment">
+      <div>
+        <p> <h4 class = "left floated ui header"> 2. Kim San Leng Bishan </h4>  <br> </p>
+        <img  style="margin-left:10px" class="ui small left floated image" src="img/Kim.jpg">
+        <p>
+          <span style ="color:green;font-weight:bold">Open Now</span><br>
+
+          <div class="ui medium compact yellow label">
+            Store Count
+            <div class="detail">4</div>
+          </div>
+
+          <div class="ui medium compact red label">
+            What's there?
+          </div>
+        </p>
+        <p> Kim San Leng Bishan Coffee Shop has famous Teochew Porrdige shop and Char Siew stall...
+        </p>
+
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div style="margin-left:10px ; margin-right:10px" sclass="ui vertical segment">
+      <div>
+        <p> <h4 class = "left floated ui header"> 3. Yishun Food Centre </h4> <br>  </p>
+        <img  style="margin-left:10px" class="ui small left floated image" src="img/Yishun.jpg">
+        <p>
+          <span style ="color:green;font-weight:bold">Open Now</span><br>
+
+          <div class="ui medium compact yellow label">
+            Store Count
+            <div class="detail">24</div>
+          </div>
+
+          <div class="ui medium compact red label">
+            What's there?
+          </div>
+        </p>
+        <p> Yishun Food Center is in the heartlands of Yishun and has the famous Wong Kee Char Kway Teow and Day and Night Ba Chor Mee stalls...
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- HUH MODAL -->
+<div class="ui longer modal huh">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    HUH?
+  </div>
+
+  <div class="scrolling content">
+
+    <div>
+      <h3 class="ui header" style="margin-top:5px">
+        <div style="display:inline-block;vertical-align:top">
+          <img src="img/chef.png" class="ui circular image"
+          style="width:70px;height:70px;margin-left:10px;">
+        </div>
+        <div style="width:190px;display:inline-block">
+          <div style="font-weight:bold;font-size:22px;padding-bottom:5px">
+            The Hawker Guide
+          </div>
+
+          <div style="font-size:16px;color:red">New to the Singapore Hawker Scene?</div>
+        </div>
+
+      </h3>
+    </div>
+
+
+    <div class="ui list" style="padding-top:20px;">
+      <p style="text-align:center">
+        <font size="3"><span style="font-weight:bold"> What is the difference between a <i>Kopitiam</i>, a Hawker Centre and a Food Court?</span></font>
+      </p>
+      <div class="item" style="text-align:center">
+        <img class="ui image" src="img/kopitiam.png"
+        style="width:60px;height:60px;">
+        <div class="content" style="margin-top:3px;width:250px">
+          <div class="description" style="text-align:justify"><font size="2.5">A <i>Kopitiam</i> translates to a Coffee House, and is a small food establishment with typically <10 hawker stalls. <i>Kopitiams</i> can be typically found in public housing estates.</font>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" style="text-align:center">
+        <img class="ui image" src="img/hawker-centre.png"
+        style="width:60px;height:60px;">
+        <div class="content" style="margin-top:3px;width:250px">
+          <div class="description" style="text-align:justify"><font size="2.5">A Hawker Centre is an open-air complex that houses many stalls, selling a large variety of cuisine. Hawker Centres first sprung up in the 1950s to address the sanitary concerns by unlicensed street hawkers.</font>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" style="text-align:center">
+        <img class="ui image" src="img/foodcourt.png"
+        style="width:60px;height:60px;">
+        <div class="content" style="margin-top:3px;width:250px">
+          <div class="description" style="text-align:justify"><font size="2.5">A Food Court is similar to a Hawker Centre, except a Food Court is air-conditioned and usually more hygenic and orderly than a Hawker Centre. A Food Court can be typically found within a shopping mall; prices are usually higher vis-a-vis a Hawker Centre.</font>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:5px;text-align:center">
+        <font size="3"><span style="font-weight:bold"> What does <i>Shiok!</i> mean?</span></font>
+      </p>
+
+      <div class="item" style="text-align:center">
+        <img class="ui image" src="img/shiok.png"
+        style="width:60px;height:60px;">
+        <div class="content" style="margin-top:3px;width:250px">
+          <div class="description" style="text-align:justify"><font size="2.5"><i>Shiok!</i> is both an exclamation expressing admiration and approval and an adjective that describes delicious food or anything excellent. E.g. This chicken rice is damn <i>shiok</i>!</font>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+// DISPLAY ADD STALL MODAL
+$(function(){
+  $("#add-stall-button").click(function(){
+    $(".add-stall").modal('show');
+  });
+  $("#add-stall-close-button").click(function(){
+    $(".add-stall").modal('hide');
+    location.reload();
+  });
+  $(".add-stall").modal({
+    closable: true
+  });
+});
+
+// DISPLAY USER PROFILE MODAL
+$(function(){
+  $("#user-profile-button").click(function(){
+    $(".user-profile").modal('show');
+  });
+  $("#user-profile-close-button").click(function(){
+    $(".user-profile").modal('hide');
+    location.reload();
+  });
+  $(".user-profile").modal({
+    closable: true
+  });
+});
+
+// DISPLAY RANKING MODAL
+$(function(){
+  $("#ranking-button").click(function(){
+    $(".ranking").modal('show');
+  });
+  $("#ranking-close-button").click(function(){
+    $(".ranking").modal('hide');
+    location.reload();
+  });
+  $(".ranking").modal({
+    closable: true
+  });
+});
+
+// DISPLAY DIRECTORY MODAL
+$(function(){
+  $("#hawker-directory-button").click(function(){
+    $(".hawker-directory").modal('show');
+  });
+  $("#hawker-directory-close-button").click(function(){
+    $(".hawker-directory").modal('hide');
+    location.reload();
+  });
+  $(".hawker-directory").modal({
+    closable: true
+  });
+});
+
+// DISPLAY HUH MODAL
+$(function(){
+  $("#huh-button").click(function(){
+    $(".huh").modal('show');
+  });
+  $("#huh-close-button").click(function(){
+    $(".huh").modal('hide');
+    location.reload();
+  });
+  $(".huh").modal({
+    closable: true
+  });
+});
+
+var placeSearch, autocomplete;
+
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  autocomplete = new google.maps.places.Autocomplete(
+    /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+    {types: ['geocode']});
+    // Set initial restrict to the greater list of countries.
+    autocomplete.setComponentRestrictions(
+      {'country': ['sg']});
+    }
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    function geolocate() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          autocomplete.setBounds(circle.getBounds());
+
+        });
+      }
+    }
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYzIzHZUMxbmbGWmWNvF6C0Ojzi3XTN1E&libraries=places&callback=initAutocomplete"
+    async defer></script>
+
+  </body>
+  </html>

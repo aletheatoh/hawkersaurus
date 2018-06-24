@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- css stylesheet -->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+  <title>Page 3</title>
+
+
+</head>
+<body>
+
+  <div class="ui top fixed menu">
+
+    <div style="padding-top:7px;padding-bottom:7px;text-align:center;">
+      <div style="text-align:center;margin-left:15px">
+        <a href="http://192.168.0.56:3000/home" ><button class="red medium circular ui icon button" id="add-stall-button">
+          <i class="icon home"></i>
+        </button>
+      </a>
+
+      <button class="green medium circular ui icon button" id="add-stall-button">
+        <i class="icon add"></i>
+      </button>
+      <button class="yellow medium circular ui icon button" id="hawker-directory-button">
+        <i class="icon list"></i>
+      </button>
+      <button class="orange medium circular ui icon button" id="user-profile-button">
+        <i class="icon user"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <a class="item right floated">Sign-out</a>
+</div>
+
+<div class="content" style="margin-left:15px;margin-right:15px;margin-top:80px">
+  <div style="margin-left:10px;margin-right:10px;">
+
+    <h2 class = "ui header"> Ang Mo Kio Block 724 </h2>
+    <p> Ang Mo Kio Block 724 is a hawker center with 36 stalls and over 500 seating capacity. It is located at 724 Ang Mo Kio Avenue 6.
+    </p>
+    <img class="ui medium image" src="img/724.jpg">
+    <br>
+    <button class="ui small compact red button">1035 <img style="width:30px" src="img/shiok-icon.png">&nbsp;s</button>&nbsp;
+    <button class="ui small compact blue button">800 Check Ins</button>
+
+  </div>
+
+  <div class="ui top attached tabular menu">
+    <div class="active item" id="stalls-tab-button">Stalls</div>
+    <div class="item" id="layout-tab-button">Layout</div>
+  </div>
+
+  <div class="ui bottom attached active tab segment" id="stalls-tab">
+
+    <h3 class = "ui header"> Top 3 Stalls in Ang Mo Kio Block 724 </h3>
+
+
+    <div class="ui vertical segment">
+      <div>
+        <h4 class = "left floated ui header"> 1. Tien Tien Chicken Rice </h4> <a class="ui tiny teal tag label">Featured</a>  <br>
+        <img class="ui small left floated image" src="img/Chicken.jpg">
+        <p>
+          <span style ="float:left;color:green;font-weight:bold">Open Now</span>
+          <br>
+
+          <div style ="float:left" class="ui small star rating" data-rating="4">
+          </div>
+          <br>
+          <span style ="float:left"><button id="tien-tien-button" class="ui tiny compact red button">Learn More</button></span>
+
+          <script>
+          $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+          </script>
+        </p>
+        <br>
+        <br>
+        <br>
+        <div>
+          <p> Tien Tien Chicken Rice has sold tasty White Chicken Rice for more than 30 years. It is one of the most famous Chicken Rice stalls in this region...
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="ui vertical segment">
+      <div>
+        <p> <h4 class = "left floated ui header"> 2. Song Song Ba Ku Teh </h4> <a class="ui teal tag label">Featured</a> <br> </p>
+        <img class="ui small left floated image" src="img/Bak.jpg">
+        <p>
+          <span style ="float:left;color:green;font-weight:bold">Open Now</span>
+          <br>
+          <div style ="float:left" class="ui small star rating" data-rating="3">
+          </div>
+          <br>
+          <span style ="float:left"> <button class="ui tiny compact red button"> Learn More </button> </span>
+          <script>
+          $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+          </script>
+        </p>
+        <br>
+        <br>
+        <br>
+        <p> Song Song Ba Ku Teh is famous for its herbal Ba Ku Teh. This is its original branch that was founded in 1996...
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="ui vertical segment">
+      <div>
+        <p> <h4 class = "left floated ui header"> 3. Katong 368 Laksa </h4> <br>  </p>
+        <img class="ui small left floated image" src="img/Laksa.jpg">
+        <p>
+          <span style ="float:left;color:green;font-weight:bold">Open Now</span>
+          <br>
+          <div style ="float:left" class="ui small star rating" data-rating="3">
+          </div>
+          <br>
+          <span style ="float:left"> <button class="ui tiny compact red button"> Learn More </button> </span>
+          <script>
+          $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+          </script>
+        </p>
+        <br>
+        <br>
+        <br>
+        <p> Katong 368 Laksa is perfect for foodies who will enjoy the spicy and creamy laksa soup...
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- STALL MODAL -->
+    <div class="ui longer modal tien-tien">
+      <i class="close icon"></i>
+      <div style="font-size: 25px" class="header">
+        Tien Tien Chicken Rice
+      </div>
+
+      <div class="scrolling content">
+
+        <div style="margin-left:10px ; margin-right:10px; margin-top:40px" sclass="ui vertical segment">
+          <div>
+            <p>
+              <img style="margin-left:10px" class="ui middle aligned medium image" src="img/Chicken.jpg">
+            </p>
+            <p>
+              <b> Ratings </b>
+              <span style ="float:right"><button id="tien-tien-shioks" class="ui small compact red button">905 <img style="width:30px" src="img/shiok-icon.png">&nbsp;s</button></span>
+
+              <div style ="float:left" class="ui small star rating" data-rating="4"> </div>
+            </i> <span style ="color:green;font-weight:bold;float:right"> Open till 9PM today</span>
+            <script>
+            $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+            </script>
+            <br>
+          </p>
+          <p style="text-align:center">
+            <button id="shiok-button" class="ui tiny compact red button"><img style="width:30px" src="img/shiok-icon.png"></button>
+            <button class="ui tiny compact green button">Add Photos</button>
+            <button class="ui tiny compact blue button">Add Review</button>
+          </p>
+
+          <script>
+
+          $('#shiok-button').click(function() {
+            $('#tien-tien-shioks').html('906 <img style="width:30px" src="img/shiok-icon.png">&nbsp;s');
+          });
+
+          </script>
+
+          <hr>
+
+          <b> Timeline </b>
+          <p>
+            <ul>
+              <li>Formerly operated as Tin Tin Chicken Rice at Old Airport Road</li>
+              <li>Head Chef trained by Hawker Chan</li>
+            </ul>
+          </p>
+
+          <b> Description </b>
+          <p> Tien Tien Chicken Rice has sold tasty White Chicken Rice for more than 30 years. It is one of the most famous Chicken Rice stalls in this region...
+          </p>
+
+
+
+          <hr>
+          <p>
+            <b> Menu </b>
+
+            <button style="float:right" class="ui small compact red button" id="add-to-tray">Add to Tray</button>
+
+            <div style="text-align:left;margin-top:15px;">
+
+              <div class="ui checkbox">
+                <input style="vertical-align:bottom" type="checkbox" name="example">
+                <label>&nbsp;</label>
+              </div>
+
+              <div style="margin-top:15px;display:inline" class="ui tiny compact button">
+                Chicken Rice
+              </div>
+              <div style="display:inline;float:right">
+                <a class="ui small compact basic red label">
+                  $3/$4/$5
+                </a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div class="ui checkbox">
+                <input style="vertical-align:bottom" type="checkbox" name="example">
+                <label>&nbsp;</label>
+              </div>
+
+              <div style="margin-top:5px" class="ui tiny compact button">
+                Half/Whole Chicken
+              </div>
+              <div style="display:inline;float:right;margin-top:-28px">
+                <a class="ui small compact basic red label">
+                  $12/$20
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <hr>
+
+        <table style="width:100%">
+          <tr>
+            <th> Reviews </th>
+            <th></th>
+          </tr>
+          <tr>
+            <td> <div class="ui tiny star rating" data-rating="4"></div></td>
+            <td>The chilli sauce is really good. Chicken is also very tender and fresh. </td>
+
+            <script>
+            $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+            </script>
+          </tr>
+          <tr>
+            <td> <div class="ui tiny star rating"></div></td>
+            <td>The aunty is very friendly and always give big portions. </td>
+
+            <script>
+            $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+            </script>
+          </tr>
+        </table>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="ui bottom attached tab segment" id="layout-tab">
+
+    <div class="ui vertical segment">
+      <img style="margin-left:10px" class="ui image" src="img/layout.jpg">
+    </div>
+
+  </div>
+
+
+</div>
+</div>
+
+<!-- CHECK OUT MODAL -->
+<div class="ui longer modal check-out">
+  <i class="close icon"></i>
+  <div style="font-size: 30px" class="header">
+    Check Out Tray
+  </div>
+
+  <div class="scrolling content">
+
+    <div id="checkout-tray">
+
+      <p> <h4 class = "left floated ui header">Chicken Rice X 1 </h4>
+        <span style ="float:right"> <button class="ui tiny compact green button"> $3 </button> </span>
+        <br> </p>
+        <div style="display:inline-block">
+          <img style="margin-left:10px;width:85px" class="ui small image" src="img/Chicken.jpg">
+        </div>
+        <div style="display:inline-block;vertical-align:top;margin-left:10px">
+          <div style="padding-bottom:5px"> Tien Tien Chicken Rice </div>
+
+          <div class="ui small star rating" data-rating="4">
+          </div>
+          <span style ="float:right;padding-left:5px"> <button class="ui tiny compact yellow button">Remove</button> </span>
+        </div>
+        <script>
+        $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+        </script>
+
+        <br>
+
+        <!-- <p> <h4 class = "left floated ui header">Ba Ku Teh X 1 </h4>
+        <span style ="float:right"> <button class="ui tiny compact green button"> $5 </button> </span>
+        <br> </p>
+        <div style="display:inline-block">
+        <img style="margin-left:10px;width:85px" class="ui small image" src="img/Bak.jpg">
+      </div>
+      <div style="display:inline-block;vertical-align:top;margin-left:10px">
+      <div style="padding-bottom:5px"> Song Song Ba Ku Teh </div>
+
+      <div class="ui small star rating" data-rating="3">
+    </div>
+    <span style ="float:right;padding-left:5px"> <button class="ui tiny compact yellow button">Remove</button> </span>
+  </div>
+  <script>
+  $('.ui.rating').rating({initialRating: 3, maxRating: 4});
+</script>
+
+<br> -->
+
+<hr>
+
+<div>
+  <p> <h4 class = "left floated ui header"> Total </h4>
+    <span style ="float:right"> <button class="ui small green button"> $3 </button> </span>
+    <br>  <br> </p>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="http://localhost:3000/ordered"><button class="ui small left attached green button">Check Out </button></a>
+    <button class="right small attached ui red button">Empty Tray </button>
+
+  </div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+<script>
+
+// tab interactivity
+$('#layout-tab-button').click(function() {
+  $('#stalls-tab-button').removeClass('active');
+  $('#stalls-tab').removeClass('active');
+  $('#layout-tab-button').addClass('active');
+  $('#layout-tab').addClass('active');
+})
+
+$('#stalls-tab-button').click(function() {
+  $('#layout-tab-button').removeClass('active');
+  $('#layout-tab').removeClass('active');
+  $('#stalls-tab-button').addClass('active');
+  $('#stalls-tab').addClass('active');
+})
+
+// DISPLAY TIEN TIEN MODAL
+$(function(){
+  $("#tien-tien-button").click(function(){
+    $(".tien-tien").modal('show');
+  });
+  $("#tien-tien-close-button").click(function(){
+    $(".tien-tien").modal('hide');
+    location.reload();
+  });
+  $(".tien-tien").modal({
+    closable: true
+  });
+});
+
+// DISPLAY CHECKOUT TRAY MODAL
+$(function(){
+  $("#add-to-tray").click(function(){
+    $(".check-out").modal('show');
+  });
+  $("#check-out-close-button").click(function(){
+    $(".check-out").modal('hide');
+    location.reload();
+  });
+  $(".check-out").modal({
+    closable: true
+  });
+});
+
+</script>
+
+
+
+</body>
+</html>

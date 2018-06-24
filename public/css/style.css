@@ -1,0 +1,49 @@
+html, body { margin: 0; height: 100%; width: 100%;}
+
+#map { position:absolute; top:0; width:100%; height: 100%; z-index: 0; }
+
+#navbar {
+  position:absolute;
+ /* remove this and left:50% for desktop */
+ margin-left:-150px;
+ bottom:10px;
+ left:68%;
+}
+
+#huh {
+  position:absolute;
+ /* remove this and left:50% for desktop */
+ top:10px;
+ left:8px;
+}
+
+.marker-icon {
+  width:40px;
+  margin-right:5px;
+  margin-bottom:5px;
+  margin-left:-3.5
+}
+
+.description-icon {
+  width:30px;
+}
+
+.distance {
+  position: absolute;
+  top:4px;
+  right:1px;
+}
+
+.container {
+  position: absolute;
+  margin: 0 auto;
+  bottom: 0;
+}
+
+.ui.success.message {
+  margin-bottom: 80px;
+}
+
+.ui.warning.message {
+  margin-bottom: 80px;
+}
